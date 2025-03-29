@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Title>Simple Chatbot</Title>
+    <Product>Simple Chatbot</Product>
+    <Version>0.1.0</Version>
+    <Company>ChatAIze</Company>
+    <Authors>Marcel Kwiatkowski</Authors>
+    <Copyright>© ChatAIze 2025</Copyright>
+    <AssemblyName>ChatAIze.SimpleChatbot</AssemblyName>
+    <RootNamespace>ChatAIze.SimpleChatbot</RootNamespace>
+    <PackageId>ChatAIze.SimpleChatbot</PackageId>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://www.chataize.com</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/chataize/simple-chatbot/releases</PackageReleaseNotes>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/chataize/simple-chatbot</RepositoryUrl>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Description>
+      Library to quickly create chatbots with custom instructions, knowledge, and actions.
+    </Description>
+    <PackageTags>
+      .net, ai, api, bot, builder, c#, chat, chataize, chatbot, chatgpt, conversation,
+      conversational, core, csharp, dotnet, easy, gpt, language, library, llm, model, nuget, openai,
+      package, quick, simple
+    </PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="\" />
+    <None Include="../README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+</Project>
