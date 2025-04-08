@@ -70,7 +70,7 @@ public sealed class Chatbot
     private async Task<float[]> CalculateEmbeddingAsync(Chat chat, CancellationToken cancellationToken = default)
     {
         const int maxMessages = 10;
-        const float decayFactor = 0.9f;
+        const float decayFactor = 0.25f;
 
         var messages = chat.Messages.Where(m => !string.IsNullOrWhiteSpace(m?.Content)).TakeLast(maxMessages).ToArray();
 
@@ -82,20 +82,14 @@ public sealed class Chatbot
             return zeroVector;
         }
 
-        var tasks = new List<Task<float[]>>(messages.Length);
-        for (var i = 0; i < messages.Length; i++)
-        {
-            var content = messages[i].Content ?? string.Empty;
-            tasks.Add(_client.GetEmbeddingAsync(content, cancellationToken: cancellationToken));
-        }
-
+        var tasks = messages.Select(msg => _client.GetEmbeddingAsync(msg!.Content!, cancellationToken: cancellationToken));
         var allEmbeddings = await Task.WhenAll(tasks);
         var weightedSum = new float[allEmbeddings[0].Length];
         var totalWeight = 0.0f;
 
         for (var i = 0; i < allEmbeddings.Length; i++)
         {
-            var distanceFromEnd = allEmbeddings.Length - 1 - i;
+            var distanceFromEnd = messages.Length - 1 - i;
             var weight = MathF.Pow(decayFactor, distanceFromEnd);
             var embedding = allEmbeddings[i];
 
