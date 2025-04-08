@@ -1,7 +1,10 @@
 ﻿using ChatAIze.GenerativeCS.Models;
 using ChatAIze.SimpleChatbot;
 
-var chatbot = new Chatbot();
+var chatbot = new Chatbot
+{
+    NumberOfRetrievedInstructions = 1
+};
 
 await chatbot.AddInstructionAsync("If the user asks about animals, always tell them about monkeys.");
 await chatbot.AddInstructionAsync("If the user asks about food, always tell them about eggs.");
