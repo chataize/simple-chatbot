@@ -13,29 +13,52 @@ public sealed class Chatbot
 
     private readonly SemanticDatabase<string> _instructionsDb;
 
-    private readonly ChatCompletionOptions _options = new();
+    private readonly SemanticDatabase<string> _knowledgeDb;
+
+    private readonly ChatCompletionOptions _completionOptions = new();
+
+    private readonly JsonSerializerOptions _jsonOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
 
     public Chatbot()
     {
         _instructionsDb = new(_client);
+        _knowledgeDb = new(_client);
     }
 
     public string LanguageModel { get; set; } = ChatCompletionModels.OpenAI.GPT4o;
 
     public string? InstructionsFilePath { get; set; }
 
+    public string? KnowledgeFilePath { get; set; }
+
     public int NumberOfRetrievedInstructions { get; set; } = 5;
+
+    public int NumberOfRetrievedKnowledge { get; set; } = 5;
 
     public async Task<string> CompleteAsync(Chat chat, CancellationToken cancellationToken = default)
     {
         var embedding = await CalculateEmbeddingAsync(chat, cancellationToken);
-        var instructions = _instructionsDb.Search(embedding, NumberOfRetrievedInstructions);
-        var instructionsJson = JsonSerializer.Serialize(instructions);
 
-        var options = _options with
+        var instructions = _instructionsDb.Search(embedding, NumberOfRetrievedInstructions);
+        var knowledge = _knowledgeDb.Search(embedding, NumberOfRetrievedKnowledge);
+
+        var options = _completionOptions with
         {
             Model = LanguageModel,
-            SystemMessageCallback = () => instructionsJson,
+            SystemMessageCallback = () =>
+            {
+                var prompt = new
+                {
+                    Instructions = instructions,
+                    Knowledge = knowledge,
+                };
+
+                var promptJson = JsonSerializer.Serialize(prompt, _jsonOptions);
+                return promptJson;
+            },
         };
 
         return await _client.CompleteAsync(chat, options, cancellationToken: cancellationToken);
@@ -57,6 +80,11 @@ public sealed class Chatbot
         {
             await _instructionsDb.LoadAsync(InstructionsFilePath, cancellationToken);
         }
+
+        if (KnowledgeFilePath is not null)
+        {
+            await _knowledgeDb.LoadAsync(KnowledgeFilePath, cancellationToken);
+        }
     }
 
     public async Task SaveAsync(CancellationToken cancellationToken = default)
@@ -64,6 +92,11 @@ public sealed class Chatbot
         if (InstructionsFilePath is not null)
         {
             await _instructionsDb.SaveAsync(InstructionsFilePath, cancellationToken);
+        }
+
+        if (KnowledgeFilePath is not null)
+        {
+            await _knowledgeDb.SaveAsync(KnowledgeFilePath, cancellationToken);
         }
     }
 
