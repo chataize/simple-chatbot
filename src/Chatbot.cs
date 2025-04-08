@@ -24,10 +24,12 @@ public sealed class Chatbot
 
     public string? InstructionsFilePath { get; set; }
 
+    public int NumberOfRetrievedInstructions { get; set; } = 5;
+
     public async Task<string> CompleteAsync(Chat chat, CancellationToken cancellationToken = default)
     {
         var embedding = await CalculateEmbeddingAsync(chat, cancellationToken);
-        var instructions = await _instructionsDb.SearchAsync(embedding, cancellationToken: cancellationToken);
+        var instructions = await _instructionsDb.SearchAsync(embedding, NumberOfRetrievedInstructions, cancellationToken);
         var instructionsJson = JsonSerializer.Serialize(instructions);
 
         var options = _options with
