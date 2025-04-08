@@ -29,7 +29,7 @@ public sealed class Chatbot
     public async Task<string> CompleteAsync(Chat chat, CancellationToken cancellationToken = default)
     {
         var embedding = await CalculateEmbeddingAsync(chat, cancellationToken);
-        var instructions = await _instructionsDb.SearchAsync(embedding, NumberOfRetrievedInstructions, cancellationToken);
+        var instructions = _instructionsDb.Search(embedding, NumberOfRetrievedInstructions);
         var instructionsJson = JsonSerializer.Serialize(instructions);
 
         var options = _options with
