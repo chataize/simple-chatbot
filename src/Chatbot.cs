@@ -7,17 +7,17 @@ using ChatAIze.SemanticIndex;
 
 namespace ChatAIze.SimpleChatbot;
 
-public sealed class Chatbot
+public class Chatbot
 {
-    private readonly OpenAIClient _client = new();
+    protected readonly OpenAIClient _client = new();
 
-    private readonly SemanticDatabase<string> _instructionsDb;
+    protected readonly SemanticDatabase<string> _instructionsDb;
 
-    private readonly SemanticDatabase<string> _knowledgeDb;
+    protected readonly SemanticDatabase<string> _knowledgeDb;
 
-    private readonly ChatCompletionOptions _completionOptions = new();
+    protected readonly ChatCompletionOptions _completionOptions = new();
 
-    private readonly JsonSerializerOptions _jsonOptions = new()
+    protected readonly JsonSerializerOptions _jsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
@@ -28,17 +28,17 @@ public sealed class Chatbot
         _knowledgeDb = new(_client);
     }
 
-    public string LanguageModel { get; set; } = ChatCompletionModels.OpenAI.GPT4o;
+    public virtual string LanguageModel { get; set; } = ChatCompletionModels.OpenAI.GPT4o;
 
-    public string? InstructionsFilePath { get; set; }
+    public virtual string? InstructionsFilePath { get; set; }
 
-    public string? KnowledgeFilePath { get; set; }
+    public virtual string? KnowledgeFilePath { get; set; }
 
-    public int NumberOfRetrievedInstructions { get; set; } = 5;
+    public virtual int NumberOfRetrievedInstructions { get; set; } = 5;
 
-    public int NumberOfRetrievedKnowledge { get; set; } = 5;
+    public virtual int NumberOfRetrievedKnowledge { get; set; } = 5;
 
-    public async Task<string> CompleteAsync(Chat chat, CancellationToken cancellationToken = default)
+    public virtual async Task<string> CompleteAsync(Chat chat, CancellationToken cancellationToken = default)
     {
         var embedding = await CalculateEmbeddingAsync(chat, cancellationToken);
 
@@ -64,17 +64,17 @@ public sealed class Chatbot
         return await _client.CompleteAsync(chat, options, cancellationToken: cancellationToken);
     }
 
-    public async Task AddInstructionAsync(string instruction, CancellationToken cancellationToken = default)
+    public virtual async Task AddInstructionAsync(string instruction, CancellationToken cancellationToken = default)
     {
         await _instructionsDb.AddAsync(instruction, cancellationToken);
     }
 
-    public void RemoveInstruction(string instruction)
+    public virtual void RemoveInstruction(string instruction)
     {
         _instructionsDb.Remove(instruction);
     }
 
-    public async Task LoadAsync(CancellationToken cancellationToken = default)
+    public virtual async Task LoadAsync(CancellationToken cancellationToken = default)
     {
         if (InstructionsFilePath is not null)
         {
@@ -87,7 +87,7 @@ public sealed class Chatbot
         }
     }
 
-    public async Task SaveAsync(CancellationToken cancellationToken = default)
+    public virtual async Task SaveAsync(CancellationToken cancellationToken = default)
     {
         if (InstructionsFilePath is not null)
         {
