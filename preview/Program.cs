@@ -3,7 +3,7 @@ using ChatAIze.SimpleChatbot;
 
 var chatbot = new Chatbot
 {
-    NumberOfRetrievedInstructions = 1
+    NumberOfRetrievedInstructions = 2
 };
 
 await chatbot.AddInstructionAsync("If the user asks about animals, always tell them about monkeys.");
