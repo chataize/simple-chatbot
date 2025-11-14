@@ -34,6 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ChatAIze.GenerativeCS" Version="0.15.0" />
-    <PackageReference Include="ChatAIze.SemanticIndex" Version="0.1.0" />
+    <PackageReference Include="ChatAIze.SemanticIndex" Version="0.1.2" />
   </ItemGroup>
 </Project>
