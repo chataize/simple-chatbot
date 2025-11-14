@@ -34,6 +34,6 @@
     <None Include="../README.md" Pack="true" PackagePath="" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\ChatAIze.SimpleChatbot.csproj" />
+    <ProjectReference Include="..\ChatAIze.SimpleChatbot\ChatAIze.SimpleChatbot.csproj" />
   </ItemGroup>
 </Project>
