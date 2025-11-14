@@ -33,7 +33,7 @@
     <None Include="../README.md" Pack="true" PackagePath="" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ChatAIze.GenerativeCS" Version="0.14.3" />
+    <PackageReference Include="ChatAIze.GenerativeCS" Version="0.15.0" />
     <PackageReference Include="ChatAIze.SemanticIndex" Version="0.1.0" />
   </ItemGroup>
 </Project>
