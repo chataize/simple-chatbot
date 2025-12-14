@@ -36,8 +36,15 @@
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="../README.md" Pack="true" PackagePath="" />
   </ItemGroup>
+  <PropertyGroup>
+    <UseLocalChataizeProjects>false</UseLocalChataizeProjects>
+  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="ChatAIze.GenerativeCS" Version="0.15.0" />
-    <PackageReference Include="ChatAIze.SemanticIndex" Version="0.1.2" />
+    <PackageReference Include="ChatAIze.GenerativeCS" Version="0.15.0" Condition="'$(UseLocalChataizeProjects)' != 'true'" />
+    <PackageReference Include="ChatAIze.SemanticIndex" Version="0.1.2" Condition="'$(UseLocalChataizeProjects)' != 'true'" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseLocalChataizeProjects)' == 'true'">
+    <ProjectReference Include="..\..\generative-cs\ChatAIze.GenerativeCS\ChatAIze.GenerativeCS.csproj" />
+    <ProjectReference Include="..\..\semantic-index\ChatAIze.SemanticIndex\ChatAIze.SemanticIndex.csproj" />
   </ItemGroup>
 </Project>
