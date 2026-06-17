@@ -40,7 +40,7 @@
     <UseLocalChataizeProjects>false</UseLocalChataizeProjects>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="ChatAIze.GenerativeCS" Version="0.15.0" Condition="'$(UseLocalChataizeProjects)' != 'true'" />
+    <PackageReference Include="ChatAIze.GenerativeCS" Version="0.21.0" Condition="'$(UseLocalChataizeProjects)' != 'true'" />
     <PackageReference Include="ChatAIze.SemanticIndex" Version="0.1.2" Condition="'$(UseLocalChataizeProjects)' != 'true'" />
   </ItemGroup>
   <ItemGroup Condition="'$(UseLocalChataizeProjects)' == 'true'">
